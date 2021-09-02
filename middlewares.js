@@ -24,11 +24,7 @@ module.exports = [
     }),
     bodyParser.urlencoded({ extended: true }),
     cors({
-        origin: [
-            `https://${config.HOST}`,
-            `http://${config.HOST}`,
-            `${config.HOST}`
-        ],
+        origin: '*',
         methods: ["GET", "POST", "PUT", 'DELETE', 'PATCH'],
         credentials: true
     }),
