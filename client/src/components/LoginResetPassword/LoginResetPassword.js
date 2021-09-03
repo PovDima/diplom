@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect, useParams } from "react-router-dom";
+import { Redirect, useParams, useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Paper, Typography, TextField } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const LoginResetPassword = () => {
+  const history = useHistory();
   const classes = useStyles()
   const dispatch = useDispatch();
   const { isAuth } = useSelector((state) => state.users);
@@ -40,6 +41,8 @@ const LoginResetPassword = () => {
       dispatch(resetPassword(password, token)).catch((error) => {
         if (error.response) {
           setServerError(error.response.data.message);
+        } else {
+          history.push("/login");
         }
       });
     }).catch(err => {
