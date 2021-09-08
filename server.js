@@ -18,8 +18,6 @@ app.use('/api', router)
 const db = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@masterdegree.xomet.mongodb.net/masterdegree?retryWrites=true&w=majority`
 const options = {
   useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
   useUnifiedTopology: true,
 };
 mongoose.connect(db, options).then(() => console.log(`Connected to ${db}...`));

@@ -2,27 +2,28 @@ const bcrypt = require("bcryptjs");
 const config = require('../utils/config')
 const jwt = require('jsonwebtoken');
 const moment = require("moment");
-moment().format();
 
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema(
+const UserSchema = new mongoose.Schema(
   {
     email: {
       type: String,
       required: true,
-      minlength: 5,
-      maxlength: 255,
       unique: true,
     },
     password: {
       type: String,
       required: true,
-      minlength: 5,
-      maxlength: 1024,
     },
-    passwordResetToken: { type: String, default: "" },
-    passwordResetExpires: { type: Date, default: moment().utcOffset(0) },
+    passwordResetToken: {
+      type: String,
+      default: ""
+    },
+    passwordResetExpires: {
+      type: Date,
+      default: moment().utcOffset(0)
+    },
     isVerified: {
       type: Boolean,
       required: true,
@@ -33,16 +34,20 @@ const userSchema = new mongoose.Schema(
       default: false,
       required: true,
     },
-    expires: { type: Date, default: moment().utcOffset(0), expires: 43200 },
-    issuedAt: {
+    expires: {
       type: Date,
+      default: moment().utcOffset(0),
+      expires: 43200
+    },
+    issuedAt: {
+      type: Date
     },
   },
-  { usePushEach: true, versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true }
 );
 
 
-userSchema.methods.getJWT = async function () {
+UserSchema.methods.getJWT = async function () {
   const expiration_time = parseInt(config.JWT_EXPIRATION);
   const issuedAt = new Date();
   this.issuedAt = issuedAt;
@@ -55,11 +60,11 @@ userSchema.methods.getJWT = async function () {
   return token;
 };
 
-userSchema.methods.validPassword = function (password) {
+UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-userSchema.methods.hashPassword = function () {
+UserSchema.methods.hashPassword = function () {
   return new Promise((resolve, reject) => {
     bcrypt.genSalt(10, (err1, salt) => {
       if (err1) {
@@ -76,13 +81,13 @@ userSchema.methods.hashPassword = function () {
   });
 };
 
-userSchema.methods.toJSON = function () {
+UserSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
   return obj;
 }
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model("User", UserSchema);
 
 module.exports = User;
 

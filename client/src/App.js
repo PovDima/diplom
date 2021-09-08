@@ -3,37 +3,42 @@ import { useDispatch } from "react-redux";
 import { Route, Redirect, Switch } from "react-router-dom";
 import { getUser } from "./store/actions/users";
 
-import ConfirmPage from './components/ConfirmPage'
-import Entrants from './components/Entrants'
-import Profile from './components/Profile'
-import NavBar from './components/NavBar'
-import LoginForgot from './components/LoginForgot'
-import Login from './components/Login'
-import LoginResetPassword from './components/LoginResetPassword'
-import Logout from './components/Logout'
-import Register from './components/Register'
-import ProtectedRoute from './components/ProtectedRoute'
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
+import ConfirmPage from './pages/ConfirmPage'
+import Statements from './pages/Statements'
+import Profile from './pages/Profile'
+import NavBar from './pages/NavBar'
+import LoginForgot from './pages/LoginForgot'
+import Login from './pages/Login'
+import LoginResetPassword from './pages/LoginResetPassword'
+import Logout from './pages/Logout'
+import Register from './pages/Register'
+import ProtectedRoute from './pages/ProtectedRoute'
+import ErrorBoundary from './pages/ErrorBoundary'
+import FilePage from "./pages/FilePage";
+import Offers from "./pages/Offers";
+import Loader from "./components/Loader";
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUser())
-      .then(() => { setLoading(false) })
-      .catch(() => { setLoading(false) });
+      .then(() => { setIsLoading(false) })
+      .catch(() => { setIsLoading(false) });
     // eslint-disable-next-line
   }, []);
 
   return (
     <ErrorBoundary >
       <NavBar />
-      {loading ? (
-        <p>Loading</p>
+      {isLoading ? (
+        <Loader />
       ) : (
         <Switch>
-          <ProtectedRoute path='/entrants' exact component={Entrants} />
+          <ProtectedRoute path='/statements' exact component={Statements} />
+          <ProtectedRoute path='/offers' exact component={Offers} />
+          <ProtectedRoute path='/files' exact component={FilePage} />
           <ProtectedRoute path='/my-profile' exact component={Profile} />
           <Route path='/account/confirm/:token' exact component={ConfirmPage} />
           <Route path='/register' exact component={Register} />
@@ -41,8 +46,8 @@ export default function App() {
           <Route path='/login/forgot' exact component={LoginForgot} />
           <Route path='/login/reset/:token' component={LoginResetPassword} />
           <ProtectedRoute path='/logout' exact component={Logout} />
-          <Redirect from='/' exact to='/entrants' />
-          <Redirect to='/entrants' />
+          <Redirect from='/' exact to='/statements' />
+          <Redirect to='/statements' />
         </Switch>
       )}
     </ErrorBoundary >
