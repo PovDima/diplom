@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import clsx from 'clsx'
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles'
@@ -16,10 +17,13 @@ const useStyles = makeStyles(theme => ({
   },
   paperWrapper: {
     padding: '35px',
-    width: '400px',
+    width: '550px',
     display: 'flex',
     flexDirection: 'column',
     textAlign: 'center'
+  },
+  register: {
+    width: '400px',
   },
   fieldWrapper: {
     display: 'flex',
@@ -122,7 +126,8 @@ const Register = () => {
         return (
           <>
             <Typography>Лист для верифікації був відправлений на пошту. Перевірте свою пошту : {email}</Typography>
-            <Typography>У вас є 12 годин щоб активувати ваш акаунт. Це може заняти 15 хвилин, щоб отримати лист</Typography>
+            <Typography>У вас є 12 годин щоб активувати ваш акаунт.</Typography>
+            <Typography>Це може заняти 15 хвилин, щоб отримати лист</Typography>
             <Button onClick={handleResendEmail}>Не отримали лист? Натисніть щоб відправити ще раз</Button>
             {serverError}
           </>
@@ -144,7 +149,7 @@ const Register = () => {
 
   return isAuth ? <Redirect to='/statements' /> :
     <div className={classes.wrapper}>
-      <Paper className={classes.paperWrapper}>
+      <Paper className={clsx(classes.paperWrapper, { [classes.register]: registerStep === 'register' })}>
         {renderSwitch()}
       </Paper>
     </div >
