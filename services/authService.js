@@ -9,7 +9,6 @@ const config = require('../utils/config')
 
 const { USER_EMAIL, HOST } = config
 
-
 const login = async (req, res) => {
   try {
     const { body } = req
@@ -44,19 +43,11 @@ const forgot = async (req, res) => {
 
     await user.save();
     await token.save();
+    await transport.forgot({ user, token })
 
-    const mailOptions = {
-      from: USER_EMAIL,
-      to: user.email,
-      subject: "Reset password link",
-      text: "Some useless text",
-      html: `<p>You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n Please click on the following link, or paste this into your browser to complete the process:\n\n
-        <a href="http://${HOST}/login/reset/${token.token}">http://${HOST}/login/reset/${token.token}</a> \n\n If you did not request this, please ignore this email and your password will remain unchanged.\n </p>`,
-    };
-
-    await transport.sendMail(mailOptions)
     return res.status(200).send({ message: `A validation email has been sent to ${user.email}` });
   } catch (err) {
+    console.log(err)
     return res.status(500).send({ message: "Сталася несподівана помилка", err });
   }
 }
@@ -81,16 +72,8 @@ const reset = async (req, res) => {
 
     await user.hashPassword();
     await user.save();
+    await transport.reset({ user });
 
-    const mailOptions = {
-      from: USER_EMAIL,
-      to: user.email,
-      subject: "Your password has been changed",
-      text: "Some useless text",
-      html: `<p>This is a confirmation that the password for your account ${user.email} has just been changed. </p>`,
-    };
-
-    await transport.sendMail(mailOptions);
     return res.status(200).send({ message: "Password has been successfully changed." });
   } catch (err) {
     return res.status(500).send({ message: "Сталася несподівана помилка", err })
@@ -117,17 +100,9 @@ const register = async (req, res) => {
       userId: user._id,
       token: crypto.randomBytes(16).toString("hex"),
     });
-    await token.save()
-    const mailOptions = {
-      from: USER_EMAIL,
-      to: user.email,
-      subject: "Email Verification",
-      text: "Some uselss text",
-      html: `<p>Please verify your account by clicking the link: 
-            <a href="http://${HOST}/account/confirm/${token.token}">http://${HOST}/account/confirm/${token.token}</a> </p>`,
-    };
 
-    await transport.sendMail(mailOptions)
+    await token.save()
+    await transport.register({ user, token })
 
     return res.status(200).send({ message: "A verification mail has been sent." });
   } catch (err) {
@@ -161,16 +136,8 @@ const resend = async (req, res) => {
     });
 
     await token.save()
-    const mailOptions = {
-      from: USER_EMAIL,
-      to: user.email,
-      subject: "Email Verification",
-      text: "Some uselss text",
-      html: `<p>Please verify your account by clicking the link: 
-        <a href="http://${HOST}/account/confirm/${token.token}">http://${HOST}/account/confirm/${token.token}</a> </p>`,
-    };
+    await transport.register({ user, token })
 
-    await transport.sendMail(mailOptions)
     return res.status(200).send({ message: "A verification mail has been sent." });
   } catch (err) {
     return res.status(500).send({ message: "Сталася несподівана помилка", err })

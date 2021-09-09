@@ -38,11 +38,9 @@ const LoginResetPassword = () => {
 
   const handleSubmit = () => {
     passwordValidation.validate({ password }).then((data) => {
-      dispatch(resetPassword(password, token)).catch((error) => {
+      dispatch(resetPassword(password, token)).then(() => history.push("/login")).catch((error) => {
         if (error.response) {
           setServerError(error.response.data.message);
-        } else {
-          history.push("/login");
         }
       });
     }).catch(err => {

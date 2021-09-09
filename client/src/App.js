@@ -5,7 +5,6 @@ import { getUser } from "./store/actions/users";
 
 import ConfirmPage from './pages/ConfirmPage'
 import Statements from './pages/Statements'
-import Profile from './pages/Profile'
 import NavBar from './pages/NavBar'
 import LoginForgot from './pages/LoginForgot'
 import Login from './pages/Login'
@@ -39,7 +38,6 @@ export default function App() {
           <ProtectedRoute path='/statements' exact component={Statements} />
           <ProtectedRoute path='/offers' exact component={Offers} />
           <ProtectedRoute path='/files' exact component={FilePage} />
-          <ProtectedRoute path='/my-profile' exact component={Profile} />
           <Route path='/account/confirm/:token' exact component={ConfirmPage} />
           <Route path='/register' exact component={Register} />
           <Route path='/login' exact component={Login} />

@@ -10,12 +10,13 @@ require('dotenv').config('./.env');
 
 const app = express();
 
-const { NODE_ENV, MONGO_USER, MONGO_PASSWORD, PORT } = process.env
+const { NODE_ENV, MONGO_USER, MONGO_PASSWORD, MONGO_ATLAS, PORT } = process.env
 app.use(middlewares);
 app.use('/api', router)
 
 // connect DB
-const db = `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@masterdegree.xomet.mongodb.net/masterdegree?retryWrites=true&w=majority`
+
+const db = MONGO_ATLAS ? `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@masterdegree.xomet.mongodb.net/masterdegree?retryWrites=true&w=majority` : "mongodb://localhost:27017/masterdegree"
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,

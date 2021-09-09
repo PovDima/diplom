@@ -26,9 +26,6 @@ const NavBar = () => {
     <AppBar className={classes.wrapper} position={'relative'} >
       {isAuth ? (
         <>
-          <Link className={classes.link} to='/my-profile'>
-            Профиль
-          </Link>
           <Link className={classes.link} to='/statements'>
             Вступники
           </Link>

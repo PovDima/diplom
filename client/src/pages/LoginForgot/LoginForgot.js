@@ -70,7 +70,7 @@ const LoginForgot = () => {
     <div className={classes.wrapper}>
       <Paper className={classes.paperWrapper}>
         <Typography className={classes.message}>
-          Лист з посиланням для зміни паролю був відправлений на пошту. <b>У вас є 12 годин щоб змінити пароль для вашого акаунту</b>
+          Лист з посиланням для зміни паролю був відправлений на пошту. <b>У вас є 12 годин щоб змінити пароль для вашого акаунту. </b>
           Це може заняти 15 хвилин, щоб отримати лист
         </Typography>
       </Paper>
@@ -78,7 +78,7 @@ const LoginForgot = () => {
   ) : (
     <div className={classes.wrapper}>
       <Paper className={classes.paperWrapper}>
-        <Typography>ММи відправиммо лист з посиланням для зміни паролю на пошту :</Typography>
+        <Typography>Ми відправимо лист з посиланням для зміни паролю на пошту :</Typography>
         <div className={classes.fieldWrapper}>
           <Typography className={classes.fieldTitle}>Пошта</Typography>
           <TextField variant={'outlined'} value={email} onChange={(e) => { setEmail(e.target.value) }} />

@@ -41,7 +41,7 @@ const GridTable = props => {
 
   return (
     <>
-      <Button className={classes.button} variant='outlined' onClick={handleExport}>
+      <Button className={classes.button} disabled={!rowData.length} variant='outlined' onClick={handleExport}>
         Завантажити файл
       </Button>
       <div className={clsx("ag-theme-alpine", classes.wrapper)}>
