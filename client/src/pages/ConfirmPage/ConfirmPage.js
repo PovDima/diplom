@@ -45,8 +45,8 @@ const FilePage = () => {
   ) : (
     <div className={classes.wrapper}>
       <Paper className={classes.paperWrapper}>
-        <Typography className={classes.title}>Click here to confirm your email</Typography>
-        <Button onClick={handleSubmit}>Confirmation</Button>
+        <Typography className={classes.title}>Натисніть тут для заверження верифікації</Typography>
+        <Button onClick={handleSubmit}>Підтвердити</Button>
         {serverError}
       </Paper>
     </div>
