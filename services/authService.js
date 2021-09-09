@@ -17,6 +17,7 @@ const login = async (req, res) => {
     if (error) return res.status(400).send({ message: error.details[0].message });
     const user = await User.findOne({ email: body.email })
     if (!user) return res.status(404).send({ message: "No user found with this email address." });
+    if (!user.isVerified) return res.status(400).send({ message: "This account is not verified. Please log in." });
     const token = await user.getJWT()
     return res.status(200).send({ message: "Login success", token, user });
   } catch (err) {
