@@ -66,7 +66,7 @@ const Statements = () => {
       ) : (
         <GridTable
           rowData={statements}
-          fileName={'Вступники'}
+          fileName={'Заявки'}
           columns={statementsColumns}
           onClick={handleClick}
         />

@@ -79,7 +79,7 @@ const FilePage = () => {
                 component="label"
                 className={classes.button}
               >
-                Імпортувати список вступників
+                Імпортувати список заявок
                 <input
                   type="file"
                   accept=".csv"

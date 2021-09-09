@@ -27,7 +27,7 @@ const NavBar = () => {
       {isAuth ? (
         <>
           <Link className={classes.link} to='/statements'>
-            Вступники
+            Заявки
           </Link>
           <Link className={classes.link} to='/offers'>
             Конкурсні пропозиції
