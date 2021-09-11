@@ -19,6 +19,7 @@ module.exports = [
                     }
                 });
                 throw new Error('BROKEN_JSON');
+                console.error(e)
             }
         }
     }),

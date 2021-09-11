@@ -16,8 +16,9 @@ const login = async (req, res) => {
 
     if (error) return res.status(400).send({ message: error.details[0].message });
     const user = await User.findOne({ email: body.email })
-    if (!user) return res.status(404).send({ message: "No user found with this email address." });
-    if (!user.isVerified) return res.status(400).send({ message: "This account is not verified. Please log in." });
+    if (!user) return res.status(404).send({ message: "Користувача з такою поштою не існує." });
+    if (!user.isVerified) return res.status(400).send({ message: "Цей акаунт не верифікований" });
+    if (!user.validPassword(body.password)) return res.status(400).send({ message: "Паролі не співпадають" })
     const token = await user.getJWT()
     return res.status(200).send({ message: "Login success", token, user });
   } catch (err) {
@@ -32,7 +33,7 @@ const forgot = async (req, res) => {
 
   try {
     const user = await User.findOne({ email: body.email })
-    if (!user) return res.status(404).send({ message: "No user found with this email address." });
+    if (!user) return res.status(404).send({ message: "Користувача з такою поштою не існує." });
 
     const token = new Token({
       userId: user._id,
@@ -60,12 +61,12 @@ const reset = async (req, res) => {
 
   try {
     const token = await Token.findOne({ token: params.token })
-    if (!token) return res.status(404).send({ message: "This token is not valid. Your token may have expired." });
+    if (!token) return res.status(404).send({ message: "Цей токен не валідний. Вам токен більше не дйсний." });
 
     const user = await User.findById(token.userId);
-    if (!user) return res.status(404).send({ message: `We were unable to find a user for this token.` });
-    if (user.passwordResetToken !== token.token) return res.status(400).send({ message: "User token and your token didn't match. You may have a more recent token in your mail list." });
-    if (moment().utcOffset(0) > user.passwordResetExpires) return res.status(400).send({ message: "You cannot reset your password. The reset token has expired. Please go through the reset form again.", })
+    if (!user) return res.status(404).send({ message: `Користувач з таким токеном не існує.` });
+    if (user.passwordResetToken !== token.token) return res.status(400).send({ message: "Токен користувача не співпадає з токеном з посилання. Можливо ви маєте актуальніший токен на вашій пошті." });
+    if (moment().utcOffset(0) > user.passwordResetExpires) return res.status(400).send({ message: "Ви не можете змінити пароль, так як токен для зміни вже не дійсний, пройдіть процедуру ще раз", })
 
     user.password = body.password;
     user.passwordResetToken = "";
@@ -89,8 +90,7 @@ const register = async (req, res) => {
 
   try {
     user = await User.findOne({ email: body.email.toLowerCase() });
-    if (user) return res.status(400).send({ message: "Email already registered. Take an another email" });
-
+    if (user) return res.status(400).send({ message: "Пошта вже використовується. Виберіть іншу пошту" });
 
     user = new User(body);
 
@@ -128,8 +128,8 @@ const resend = async (req, res) => {
 
   try {
     const user = await User.findOne({ email: body.email })
-    if (!user) return res.status(404).send({ message: "We were unable to find a user with that email." });
-    if (user.isVerified) return res.status(400).send({ message: "This account has already been verified. Please log in." });
+    if (!user) return res.status(404).send({ message: "Користувача з такою поштою не існує." });
+    if (user.isVerified) return res.status(400).send({ message: "Цей акаунте вже верифікований. Залогінтесь." });
 
     const token = new Token({
       userId: user._id,
@@ -152,7 +152,7 @@ const registerReset = async (req, res) => {
 
   try {
     const user = await User.findOneAndDelete({ email: body.email, isVerified: false })
-    if (!user) return res.status(404).send("User not found");
+    if (!user) return res.status(404).send("Користувач не знайден");
 
     return res.status(200).send({ message: "User reset success" });
   } catch (err) {
@@ -163,11 +163,11 @@ const registerReset = async (req, res) => {
 const confirmation = async (req, res) => {
   try {
     const token = await Token.findOne({ token: req.params.token })
-    if (!token) return res.status(404).send({ message: "We were unable to find a valid token. Your token may have expired." });
+    if (!token) return res.status(404).send({ message: "Цей токен вже не валідний." });
 
     const user = await User.findById(token.userId)
-    if (!user) return res.status(404).send({ message: `We were unable to find a user for this token.` });
-    if (user.isVerified) return res.status(400).send({ message: "This user has already been verified. Please log in." });
+    if (!user) return res.status(404).send({ message: `Користувач з таким токеном не існує.` });
+    if (user.isVerified) return res.status(400).send({ message: "Цей акаунт вже верифікований. Залогінтесь." });
 
     user.isVerified = true;
     user.expires = null;
