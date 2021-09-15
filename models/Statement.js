@@ -208,7 +208,7 @@ const StatementSchema = new mongoose.Schema(
       default: "",
     },
     documentIssuanceDate: {
-      type: String,
+      type: Date,
       default: "",
     },
     documentIssuedBy: {
@@ -224,7 +224,7 @@ const StatementSchema = new mongoose.Schema(
       default: "",
     },
     addedTimeInEDEBO: {
-      type: String,
+      type: Date,
       default: "",
     },
     isNeedChangeZNO: {//Boolean
@@ -248,7 +248,7 @@ const StatementSchema = new mongoose.Schema(
       default: "",
     },
     lastTimeChange: {
-      type: String,
+      type: Date,
       default: "",
     },
     addedStatement: {

@@ -1,3 +1,3 @@
-module.exports = function (err, req, res) {
-  res.status(500).send('Щось не вдалося.');
+module.exports = function (req, res) {
+  res.status(500).send({ message: 'Щось не вдалося.' });
 }

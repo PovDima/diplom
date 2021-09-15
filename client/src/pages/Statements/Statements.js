@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from "react-router-dom";
 
-import { getStatements } from "../../store/actions/statements";
+import { getStatements, deleteStatement } from "../../store/actions/statements";
 import Loader from "../../components/Loader";
 import GridTable from '../../components/GridTable'
 import { statementsColumns } from '../../utils/columns'
@@ -38,26 +38,25 @@ const Statements = () => {
   const dispatch = useDispatch();
   const classes = useStyles()
 
-  const getDeliveriesList = useCallback(async () => {
+  const getStatementsList = useCallback(async () => {
     setIsLoading(true);
     try {
       dispatch(getStatements({})).then(() => setIsLoading(false))
     } catch (err) {
+      setIsLoading(false)
       console.error(err);
-      setIsLoading(false);
     }
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    getDeliveriesList().catch()
+    getStatementsList().catch()
     // eslint-disable-next-line
   }, []);
 
-
-  const handleClick = (e) => {
-    // history.push(`/statements/${e.data._id}`)
-  }
+  const handleCreateStatement = () => history.push(`/statements/create`)
+  const handleDeleteStatement = async ({ statementId }) => dispatch(deleteStatement(statementId))
+  const handleUpdateStatement = async (data) => history.push(`/statements/${data.statementId}`)
 
   return (
     <div className={classes.wrapper}>
@@ -68,7 +67,9 @@ const Statements = () => {
           rowData={statements}
           fileName={'Заявки'}
           columns={statementsColumns}
-          onClick={handleClick}
+          deleteRow={handleDeleteStatement}
+          updateRow={handleUpdateStatement}
+          createRow={handleCreateStatement}
         />
       )}
     </div>

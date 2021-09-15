@@ -80,19 +80,19 @@ const OfferSchema = new mongoose.Schema(
       default: ""
     },
     studyStart: {
-      type: String
+      type: Date
     },
     studyEnd: {
-      type: String
+      type: Date
     },
     dateApplication: {
-      type: String
+      type: Date
     },
     lastChange: {
-      type: String
+      type: Date
     },
     licenseDownload: {
-      type: String
+      type: Date
     },
     licenseBasis: {
       type: String,

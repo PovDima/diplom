@@ -40,4 +40,49 @@ const getOffers = async (req, res) => {
   }
 }
 
-module.exports = { getOffers }
+const updateOffer = async (req, res) => {
+  const { params: { offerId }, body } = req
+  try {
+    const offer = await Offer.findOneAndUpdate({ offerId }, { ...body });
+
+    return res.status(200).send({ message: "Success update offer", offer });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+const deleteOffer = async (req, res) => {
+  const { params: { offerId }, body } = req
+  try {
+    const offer = await Offer.findOneAndDelete({ offerId });
+
+    return res.status(200).send({ message: "Success delete offer", offer });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+const getOffer = async (req, res) => {
+  const { params: { offerId } } = req
+  try {
+    const offer = await Offer.findOne({ offerId });
+
+    return res.status(200).send({ message: "Success get offer", offer });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+const createOffer = async (req, res) => {
+  const { body } = req
+  try {
+    const offer = await Offer.create({ ...body });
+
+    return res.status(200).send({ message: "Success create offer", offer });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+
+module.exports = { getOffers, updateOffer, createOffer, deleteOffer, getOffer }

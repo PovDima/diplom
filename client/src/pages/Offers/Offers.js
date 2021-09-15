@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles'
 import { useHistory } from "react-router-dom";
 
-import { getOffers } from "../../store/actions/offers";
+import { getOffers, deleteOffer } from "../../store/actions/offers";
 import Loader from "../../components/Loader";
 import GridTable from '../../components/GridTable'
 import { offersColumns } from '../../utils/columns'
@@ -54,10 +54,9 @@ const Offers = () => {
     // eslint-disable-next-line
   }, []);
 
-
-  const handleClick = (e) => {
-    // history.push(`/offers/${e.data._id}`)
-  }
+  const handleCreateOffer = () => history.push(`/offers/create`)
+  const handleDeleteOffer = async ({ offerId }) => dispatch(deleteOffer(offerId))
+  const handleUpdateOffer = async (data) => history.push(`/offers/${data.offerId}`)
 
   return (
     <div className={classes.wrapper}>
@@ -68,7 +67,9 @@ const Offers = () => {
           rowData={offers}
           fileName={'Конкурсні пропозиції'}
           columns={offersColumns}
-          onClick={handleClick}
+          deleteRow={handleDeleteOffer}
+          updateRow={handleUpdateOffer}
+          createRow={handleCreateOffer}
         />
       )}
     </div>

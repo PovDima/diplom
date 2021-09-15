@@ -44,12 +44,11 @@ const FilePage = () => {
     reader.onload = (e) => {
       inputRef.current.value = '';
       setIsLoading(true)
-      dispatch(importFile(key, file)).then((res) => { console.log(res); setServerMessage(res.message); setIsLoading(false) }).catch((error) => {
+      dispatch(importFile(key, file)).then((res) => setServerMessage(res.message)).catch((error) => {
         if (error.response) {
           setServerMessage(error.response.data.message);
         }
-        setIsLoading(false)
-      });
+      }).finally(() => setIsLoading(false));
     };
 
   }

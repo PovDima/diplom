@@ -40,4 +40,47 @@ const getStatements = async (req, res) => {
   }
 }
 
-module.exports = { getStatements }
+const updateStatement = async (req, res) => {
+  const { params: { statementId }, body } = req
+  try {
+    const statement = await Statement.findOneAndUpdate({ statementId }, { ...body });
+
+    return res.status(200).send({ message: "Success update statement", statement });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+const deleteStatement = async (req, res) => {
+  const { params: { statementId }, body } = req
+  try {
+    const statement = await Statement.findOneAndDelete({ statementId });
+
+    return res.status(200).send({ message: "Success delete statement", statement });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+const getStatement = async (req, res) => {
+  const { params: { statementId } } = req
+  try {
+    const statement = await Statement.findOne({ statementId });
+
+    return res.status(200).send({ message: "Success get statement", statement });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+const createStatement = async (req, res) => {
+  const { body } = req
+  try {
+    const statement = await Statement.create({ ...body });
+
+    return res.status(200).send({ message: "Success create statement", statement });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+module.exports = { getStatements, updateStatement, createStatement, deleteStatement, getStatement }
