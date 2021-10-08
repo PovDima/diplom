@@ -15,6 +15,7 @@ mongoose.connect(db, options).then(() => {
     console.time('a')
     const statements = await Statement.find({ statementStatus: { $nin: ['Скасовано вступником'] }, priority: { $ne: null } }, { offerName: 1, competitiveScore: 1, priority: 1, statementId: 1 }).sort({ competitiveScore: -1 });
     const offers = await Offer.find();
+    console.log(statements.length)
     const statementsToOffer = offers.reduce((acc, offer) => {
       const filterStatements = statements.filter(statement => statement.offerName === offer.name).sort((a, b) => a.priority - b.priority)
       if (filterStatements.length) {
@@ -24,7 +25,7 @@ mongoose.connect(db, options).then(() => {
       return acc
     }, {})
 
-    console.log(statementsToOffer)
+    // console.log(statementsToOffer)
     console.timeEnd('a')
     process.exit()
   })();

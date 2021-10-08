@@ -74,7 +74,6 @@ const OfferSchema = new mongoose.Schema(
     seatsNumber: {
       type: Number
     },
-
     isShortenedTerm: {
       type: String,//Boolean
       default: ""
