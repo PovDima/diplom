@@ -20,6 +20,7 @@ const offerTrasform = (offers) => {
     'Тип програми магістра': 'masterType',
     'Освітні програми': 'educationalPrograms',
     'Структурний підрозділ': 'structuralUnit',
+    'Кількість місць': 'seatsNumber',
     'Скорочений термін': 'isShortenedTerm',
     'Термін навчання': 'studyPeriod',
     'Початок навчання': 'studyStart',

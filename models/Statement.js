@@ -88,12 +88,10 @@ const StatementSchema = new mongoose.Schema(
       default: "",
     },
     competitiveScore: {
-      type: String,
-      default: "",
+      type: Number,
     },
     priority: {
-      type: String,
-      default: "",
+      type: Number,
     },
     sequenceRankingSameNumberOfPoints: {
       type: String,

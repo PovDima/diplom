@@ -30,4 +30,9 @@ router.post("/",
   async (req, res) => statementService.createStatement(req, res)
 );
 
+router.post("/algorithm",
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => statementService.startAlgorithm(req, res)
+);
+
 module.exports = router;

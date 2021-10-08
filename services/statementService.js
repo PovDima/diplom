@@ -83,4 +83,14 @@ const createStatement = async (req, res) => {
     return res.status(500).send({ message: "Сталася несподівана помилка", err })
   }
 }
-module.exports = { getStatements, updateStatement, createStatement, deleteStatement, getStatement }
+
+
+const startAlgorithm = async (req, res) => {
+  try {
+    return res.status(200).send({ message: "Success update statements statuses" });
+  } catch (err) {
+    return res.status(500).send({ message: "Сталася несподівана помилка", err })
+  }
+}
+
+module.exports = { getStatements, updateStatement, createStatement, deleteStatement, getStatement, startAlgorithm }

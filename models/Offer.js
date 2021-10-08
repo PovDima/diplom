@@ -71,6 +71,10 @@ const OfferSchema = new mongoose.Schema(
       type: String,
       default: ""
     },
+    seatsNumber: {
+      type: Number
+    },
+
     isShortenedTerm: {
       type: String,//Boolean
       default: ""

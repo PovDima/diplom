@@ -17,6 +17,7 @@ export const offersColumns = [
   { headerName: 'Тип програми магістра', field: 'masterType' },
   { headerName: 'Освітні програми', field: 'educationalPrograms' },
   { headerName: 'Структурний підрозділ', field: 'structuralUnit' },
+  { headerName: 'Кількість місць', field: 'seatsNumber' },
   { headerName: 'Скорочений термін', field: 'isShortenedTerm', selected: ['так', 'ні'] },
   { headerName: 'Термін навчання', field: 'studyPeriod' },
   { headerName: 'Початок навчання', field: 'studyStart', isDate: true },
