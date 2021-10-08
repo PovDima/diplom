@@ -16,7 +16,7 @@ app.use('/api', router)
 
 // connect DB
 
-const db = MONGO_ATLAS ? `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@masterdegree.xomet.mongodb.net/masterdegree?retryWrites=true&w=majority` : "mongodb://localhost:27017/masterdegree"
+const db = MONGO_ATLAS ? `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@masterdegree.xomet.mongodb.net/masterdegree?retryWrites=true&w=majority` : `mongodb+srv://${MONGO_USER}:${MONGO_PASSWORD}@masterdegree.xomet.mongodb.net/masterprod?retryWrites=true&w=majority`
 const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
