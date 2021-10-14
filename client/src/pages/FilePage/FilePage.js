@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Paper } from "@material-ui/core";
 import { importFile } from "../../store/actions/files";
+import { startAlgorithm } from "../../store/actions/statements";
 import Loader from "../../components/Loader";
 
 const useStyles = makeStyles(theme => ({
@@ -52,6 +53,12 @@ const FilePage = () => {
     };
 
   }
+
+  const handleStartAlogorithm = async () => {
+    setIsLoading(true)
+    dispatch(startAlgorithm()).then(() => setIsLoading(false)).catch(() => setIsLoading(false))
+  }
+
   return (
     <div className={classes.wrapper}>
       <Paper className={classes.paperWrapper}>
@@ -86,6 +93,14 @@ const FilePage = () => {
                   onChange={handleChange('statements')}
                   hidden
                 />
+              </Button>
+              <Button
+                variant="contained"
+                component="label"
+                className={classes.button}
+                onClick={handleStartAlogorithm}
+              >
+                Запустити алгоритм
               </Button>
               {serverMessage}
             </>

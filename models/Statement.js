@@ -91,8 +91,7 @@ const StatementSchema = new mongoose.Schema(
       type: Number,
     },
     priority: {
-      type: Number,
-      default: 1
+      type: Number
     },
     sequenceRankingSameNumberOfPoints: {
       type: String,

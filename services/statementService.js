@@ -1,4 +1,5 @@
 const Statement = require("../models/Statement");
+const Offer = require("../models/Offer");
 
 const getStatements = async (req, res) => {
   const { params, query } = req
@@ -87,7 +88,18 @@ const createStatement = async (req, res) => {
 
 const startAlgorithm = async (req, res) => {
   try {
-    return res.status(200).send({ message: "Success update statements statuses" });
+    const statements = await Statement.find({ statementStatus: { $nin: ['Скасовано вступником', 'Скасовано (втрата пріор.)', 'Відмова'] }, priority: { $ne: null } }, { offerName: 1, competitiveScore: 1, priority: 1, statementId: 1, statementStatus: 1, personaId: 1 }).sort({ competitiveScore: -1 });
+    const offers = await Offer.find({ offerId: '537714' }, { name: 1, offerId: 1, seatsNumber: 1 });
+    const statementsToOffer = offers.reduce((acc, { offerId, name, seatsNumber }, index) => {
+      const filterStatements = statements.filter(statement => statement.offerName === name).sort((a, b) => a.priority - b.priority)
+      if (filterStatements.length) {
+        acc[offerId] = { filterStatements, seatsNumber }
+      }
+      console.log(filterStatements)
+      return acc
+    }, {})
+
+    return res.status(200).send({ message: "Success update statements statuses", statementsToOffer });
   } catch (err) {
     return res.status(500).send({ message: "Сталася несподівана помилка", err })
   }

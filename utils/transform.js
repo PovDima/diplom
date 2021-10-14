@@ -1,5 +1,6 @@
 const csv = require('csv-parser')
-const fs = require('fs')
+const fs = require('fs');
+const config = require('./config')
 
 const offerTrasform = (offers) => {
   const offerMap = {
