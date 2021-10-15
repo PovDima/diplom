@@ -16,27 +16,85 @@ mongoose.connect(db, options).then(async () => {
   (async () => {
     console.log('conected')
     console.time('a')
-
-    const statements = await Statement.find({ statementStatus: { $nin: ['Скасовано вступником', 'Скасовано (втрата пріор.)', 'Відмова'] }, priority: { $ne: null } }, { offerName: 1, competitiveScore: 1, priority: 1, statementId: 1, statementStatus: 1, personaId: 1 }).sort({ competitiveScore: -1 });
+    const finalUpdates = []
+    const statements = await Statement.find(
+      { statementStatus: { $nin: ['Скасовано вступником', 'Скасовано (втрата пріор.)', 'Відмова'] }, priority: { $ne: null } },
+      { offerName: 1, competitiveScore: 1, priority: 1, statementId: 1, statementStatus: 1, personaId: 1 }
+    ).sort({ competitiveScore: -1 });
     const offers = await Offer.find({ educationalDegree: 'Магістр' }, { name: 1, offerId: 1, seatsNumber: 1 });
 
     const statementsToOffer = offers.reduce((acc, { offerId, name, seatsNumber }, index) => {
-      const filterStatements = statements.filter(statement => statement.offerName === name)
+      const filterStatements = statements.reduce((acc, el) => {
+        if (el.offerName === name) {
+          acc.push({ ...el.toObject(), isSorted: false });
+        }
+        return acc;
+      }, []);
       if (filterStatements.length) {
         acc[offerId] = { filterStatements, seatsNumber }
       }
       return acc
     }, {})
 
-    // добавить сортев и если все места сортед то не проверять 
-    // 1 прохожу по спец и проверяю 1 приоритеты если проходят, то удаляем с других и там по всем
-    // 2 проверяем на первый приоритет еще раз может появмиллись новые
-    // 3 проверям пока все первые не будут отмечены кака проходят
-    // 4 тоже самое по второму и опять по первому пока не выполниться условие 3  
-    // 5 потом повторяем шаг 4
+    const removeFromAllArrays = (personaId, iterator, priority) => {
+      for (const key in iterator) {
+        const index = iterator[key].filterStatements.findIndex(el => el.personaId === personaId && el.isSorted !== true && el.priority !== priority)
+        index > 0 ? iterator[key].filterStatements.splice(index, 1) : null
+      }
+    }
+    const goThroughArray = (array, priority) => {
+      for (const key in statementsToOffer) {
+        const offer = statementsToOffer[key]
+        for (let i = 0; i < offer.seatsNumber; i++) {
+          const el = offer.filterStatements[i];
+          if (el.priority === priority) {
+            el.isSorted = true
+            removeFromAllArrays(el.personaId, statementsToOffer, priority)
+          }
+        }
+      }
+      let repeat = false
+      for (const key in statementsToOffer) {
+        const offer = statementsToOffer[key]
+        for (let i = 0; i < offer.seatsNumber; i++) {
+          const el = offer.filterStatements[i];
+          if (el.priority === priority) {
+            if (el.isSorted !== true) repeat = true
+          }
+        }
+      }
+      if (repeat) goThroughArray(statementsToOffer, priority)
+    }
 
-    console.timeEnd('a')
-    process.exit()
+    goThroughArray(statementsToOffer, 1)
+    goThroughArray(statementsToOffer, 2)
+    goThroughArray(statementsToOffer, 3)
+    goThroughArray(statementsToOffer, 4)
+    goThroughArray(statementsToOffer, 5)
+
+    for (const key in statementsToOffer) {
+      const offer = statementsToOffer[key]
+      offer.filterStatements.splice(offer.seatsNumber)
+      finalUpdates.push(...offer.filterStatements)
+    }
+
+    // await Statement.find(
+    //   { statementId: { $in: finalUpdates.map(el => el.statementId) } },
+    //   { statementStatus: 'Рекомендовано (бюджет)' }
+    // )
+    for (const key in statementsToOffer) {
+      console.log(statementsToOffer[key].filterStatements.length)
+    }
+
+    fs.writeFile('test.json', JSON.stringify(statementsToOffer), err => {
+      if (err) {
+        console.error(err)
+        return
+      }
+
+      console.timeEnd('a')
+      process.exit()
+    })
   })();
 }).catch(() => {
   process.exit()
