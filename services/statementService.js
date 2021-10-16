@@ -1,5 +1,6 @@
 const Statement = require("../models/Statement");
 const Offer = require("../models/Offer");
+const fs = require('fs');
 
 const getStatements = async (req, res) => {
   const { params, query } = req
@@ -119,7 +120,8 @@ const startAlgorithm = async (req, res) => {
         const offer = statementsToOffer[key]
         for (let i = 0; i < offer.seatsNumber; i++) {
           const el = offer.filterStatements[i];
-          if (el.priority === priority) {
+          console.log(el, priority, i)
+          if (el?.priority === priority) {
             el.isSorted = true
             removeFromAllArrays(el.personaId, statementsToOffer, priority)
           }
@@ -130,8 +132,8 @@ const startAlgorithm = async (req, res) => {
         const offer = statementsToOffer[key]
         for (let i = 0; i < offer.seatsNumber; i++) {
           const el = offer.filterStatements[i];
-          if (el.priority === priority) {
-            if (el.isSorted !== true) repeat = true
+          if (el?.priority === priority) {
+            if (el?.isSorted !== true) repeat = true
           }
         }
       }
@@ -149,7 +151,6 @@ const startAlgorithm = async (req, res) => {
       offer.filterStatements.splice(offer.seatsNumber)
       finalUpdates.push(...offer.filterStatements)
     }
-
     await Statement.updateMany(
       { statementId: { $in: finalUpdates.map(el => el.statementId) } },
       { statementStatus: 'Рекомендовано (бюджет)' }
@@ -157,6 +158,7 @@ const startAlgorithm = async (req, res) => {
 
     return res.status(200).send({ message: "Success update statements statuses", finalUpdates });
   } catch (err) {
+    console.log(err)
     return res.status(500).send({ message: "Сталася несподівана помилка", err })
   }
 }

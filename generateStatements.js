@@ -27,6 +27,16 @@ const persons = [
   Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
   Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
   Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
+  Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
 ]
 
 const sampleStatement = (statementId, personaId, offerName, specialty, structuralUnit, priority) => {
@@ -127,15 +137,15 @@ mongoose.connect(db, options).then(async () => {
     console.time('a')
     const results = []
     const offers = await Offer.find({ educationalDegree: 'Магістр' }, { name: 1, offerId: 1, seatsNumber: 1, specialtyCode: 1, specialty: 1, structuralUnit: 1 });
-    const result = offers.slice(0, 3).forEach((offer) => {
+    const result = offers.slice(0, 5).forEach((offer, index) => {
       const { name, specialtyCode, structuralUnit, specialty } = offer
-      persons.forEach((person, index) => results.push(sampleStatement(
+      persons.forEach((person) => results.push(sampleStatement(
         Math.floor(Math.random() * (Math.floor(20000) - Math.ceil(1) + 1)) + Math.ceil(1),
         person,
         name,
         `${specialtyCode} ${specialty}`,
         structuralUnit,
-        Math.floor(Math.random() * (Math.floor(3) - Math.ceil(1) + 1)) + Math.ceil(1)
+        index + 1// Math.floor(Math.random() * (Math.floor(3) - Math.ceil(1) + 1)) + Math.ceil(1)
       )))
     })
     await Statement.create(results)
