@@ -36,7 +36,7 @@ const offerTrasform = (offers) => {
 
   for (const offer of offers) {
     for (const [key, value] of Object.entries(offer)) {
-      offer[offerMap[key]] = value;
+      offer[offerMap[key] || 'offerId'] = value;
       delete offer[key]
     }
   }
@@ -132,7 +132,7 @@ const statementsTransform = (statements) => {
 
   for (const statement of statements) {
     for (const [key, value] of Object.entries(statement)) {
-      statement[statementMap[key]] = value;
+      statement[statementMap[key] || 'statementId'] = value;
       delete statement[key]
     }
   }

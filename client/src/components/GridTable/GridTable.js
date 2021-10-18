@@ -31,7 +31,6 @@ const GridTable = props => {
   const handleClick = () => setIsClicked(true)
 
   const defaultColDef = useMemo((col) => {
-    console.log(col)
     return {
       resizable: true,
       sortable: true,
