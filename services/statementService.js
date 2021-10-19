@@ -120,7 +120,6 @@ const startAlgorithm = async (req, res) => {
         const offer = statementsToOffer[key]
         for (let i = 0; i < offer.seatsNumber; i++) {
           const el = offer.filterStatements[i];
-          console.log(el, priority, i)
           if (el?.priority === priority) {
             el.isSorted = true
             removeFromAllArrays(el.personaId, statementsToOffer, priority)
