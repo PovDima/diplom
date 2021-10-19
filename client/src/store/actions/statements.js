@@ -49,7 +49,8 @@ export const createStatement = (data) => async (dispatch) => {
 }
 
 export const startAlgorithm = () => async (dispatch) => {
-  await axios.post(`/statements/algorithm`)
+  const res = await axios.post(`/statements/algorithm`)
   dispatch({ type: START_ALGORYTHM_SUCCESS })
+  return res.data
 }
 

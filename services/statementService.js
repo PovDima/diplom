@@ -156,7 +156,7 @@ const startAlgorithm = async (req, res) => {
       { statementStatus: 'Рекомендовано (бюджет)' }
     )
 
-    return res.status(200).send({ message: "Success update statements statuses", finalUpdates });
+    return res.status(200).send({ message: "Алгоритм успішно виконаний", finalUpdates });
   } catch (err) {
     console.log(err)
     return res.status(500).send({ message: "Сталася несподівана помилка", err })

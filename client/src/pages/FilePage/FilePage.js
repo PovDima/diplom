@@ -56,7 +56,7 @@ const FilePage = () => {
 
   const handleStartAlogorithm = async () => {
     setIsLoading(true)
-    dispatch(startAlgorithm()).then(() => setIsLoading(false)).catch(() => setIsLoading(false))
+    dispatch(startAlgorithm()).then((res) => { setServerMessage(res.message); setIsLoading(false) }).catch(() => setIsLoading(false))
   }
 
   return (
@@ -102,6 +102,7 @@ const FilePage = () => {
               >
                 Запустити алгоритм
               </Button>
+              <br/>
               {serverMessage}
             </>
         }
