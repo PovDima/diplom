@@ -51,6 +51,7 @@ export const statementsColumns = [
   { headerName: 'Стать', field: 'sex', selected: ['Чоловіча', 'Жіноча'] },
   { headerName: 'Чи громадянин України', field: 'isCitizenOfUkraine', selected: ['Так', 'Ні'] },
   { headerName: 'Статус заявки', field: 'statementStatus' },
+  { headerName: 'Група', field: 'group' },
   { headerName: 'Номер (шифр) особової справи', field: 'personalFileCode' },
   { headerName: 'Конкурсний бал', field: 'competitiveScore' },
   { headerName: 'Пріоритет', field: 'priority' },

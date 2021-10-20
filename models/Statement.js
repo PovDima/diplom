@@ -83,6 +83,10 @@ const StatementSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    group: {
+      type: String,
+      default: "",
+    },
     personalFileCode: {
       type: String,
       default: "",

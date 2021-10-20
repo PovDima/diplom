@@ -66,6 +66,7 @@ const Offers = () => {
         <GridTable
           rowData={offers}
           fileName={'Конкурсні пропозиції'}
+          type={'offer'}
           columns={offersColumns}
           deleteRow={handleDeleteOffer}
           updateRow={handleUpdateOffer}

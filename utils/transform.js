@@ -66,6 +66,7 @@ const statementsTransform = (statements) => {
     'Стать': 'sex',
     'Чи громадянин України': 'isCitizenOfUkraine',
     'Статус заявки': 'statementStatus',
+    'Група': 'group',
     'Номер (шифр) особової справи': 'personalFileCode',
     'Конкурсний бал': 'competitiveScore',
     'Пріоритет': 'priority',

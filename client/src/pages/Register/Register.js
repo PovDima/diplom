@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import clsx from 'clsx'
-import { useSelector, useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { makeStyles } from '@material-ui/core/styles'
 import { Button, Paper, Typography, TextField } from "@material-ui/core";
 
@@ -47,7 +46,6 @@ const useStyles = makeStyles(theme => ({
 const Register = () => {
   const classes = useStyles()
   const dispatch = useDispatch();
-  const { isAuth } = useSelector((state) => state.users);
   const [serverError, setServerError] = useState("");
   const [email, setEmail] = useState("");
   const [registerStep, setRegisterStep] = useState("register");
@@ -125,19 +123,18 @@ const Register = () => {
       case "resend":
         return (
           <>
-            <Typography>Лист для верифікації був відправлений на пошту. Перевірте свою пошту : {email}</Typography>
-            <Typography>У вас є 12 годин щоб активувати ваш акаунт.</Typography>
+            <Typography>Лист для верифікації був відправлений на пошту</Typography>
+            <Typography>У користувача є 12 годин щоб активувати його акаунт.</Typography>
             <Typography>Це може заняти 15 хвилин, щоб отримати лист</Typography>
-            <Button onClick={handleResendEmail}>Не отримали лист? Натисніть щоб відправити ще раз</Button>
+            <Button onClick={handleResendEmail}>Користувач не отримав лист? Натисніть щоб відправити ще раз</Button>
             {serverError}
           </>
         );
-
       case "reset":
         return (
           <>
-            <Typography>Ще не отримали лист? </Typography>
-            <Typography>Спробуйте зареєструватися ще раз. Можливо ви вказали неправильну пошту.</Typography>
+            <Typography>Користувач ще не отримав лист? </Typography>
+            <Typography>Спробуйте зареєструватися його ще раз. Можливо ви вказали неправильну пошту.</Typography>
             <Button onClick={handleReset}>Натисніть щоб видалити існуючий акаунт</Button>
             {serverError}
           </>
@@ -147,12 +144,13 @@ const Register = () => {
     }
   }
 
-  return isAuth ? <Redirect to='/statements' /> :
+  return (
     <div className={classes.wrapper}>
       <Paper className={clsx(classes.paperWrapper, { [classes.register]: registerStep === 'register' })}>
         {renderSwitch()}
       </Paper>
-    </div >
+    </div>
+  )
 }
 
 export default Register

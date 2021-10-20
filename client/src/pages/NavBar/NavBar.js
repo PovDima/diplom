@@ -18,11 +18,10 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const NavBar = () => {
-  const { isAuth } = useSelector((state) => state.users);
+  const { isAuth, user } = useSelector((state) => state.users);
   const classes = useStyles()
 
   return (
-
     <AppBar className={classes.wrapper} position={'relative'} >
       {isAuth ? (
         <>
@@ -35,6 +34,9 @@ const NavBar = () => {
           <Link className={classes.link} to='/files'>
             Робота з файлами
           </Link>
+          {user.isAdmin && <Link className={classes.link} to='/register'>
+            Реєстрація
+          </Link>}
           <Link className={classes.link} to='/logout'>
             Вихід
           </Link>
@@ -44,9 +46,9 @@ const NavBar = () => {
           <Link className={classes.link} to='/login'>
             Вхід
           </Link>
-          <Link className={classes.link} to='/register'>
+          {/* <Link className={classes.link} to='/register'>
             Реєстрація
-          </Link>
+          </Link> */}
         </>
       )}
 

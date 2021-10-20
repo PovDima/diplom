@@ -42,12 +42,12 @@ export default function App() {
           <ProtectedRoute path='/offers/:offerId' exact component={Offer} />
           <ProtectedRoute path='/offers' exact component={Offers} />
           <ProtectedRoute path='/files' exact component={FilePage} />
+          <ProtectedRoute path='/register' exact component={Register} />
+          <ProtectedRoute path='/logout' exact component={Logout} />
           <Route path='/account/confirm/:token' exact component={ConfirmPage} />
-          <Route path='/register' exact component={Register} />
           <Route path='/login' exact component={Login} />
           <Route path='/login/forgot' exact component={LoginForgot} />
           <Route path='/login/reset/:token' component={LoginResetPassword} />
-          <ProtectedRoute path='/logout' exact component={Logout} />
           <Redirect from='/' exact to='/statements' />
           <Redirect to='/statements' />
         </Switch>

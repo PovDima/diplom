@@ -83,7 +83,7 @@ const Login = () => {
           <Button onClick={handleSubmit}>
             Увійти
           </Button>
-          <Link className={classes.link} to='/register'>Реєстрація</Link>
+          {/* <Link className={classes.link} to='/register'>Реєстрація</Link> */}
         </div>
         {serverError}
       </Paper>

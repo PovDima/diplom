@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import clsx from 'clsx'
 import moment from 'moment'
 import { makeStyles } from '@material-ui/core/styles'
-import { Button } from '@material-ui/core/'
+import { Button } from '@material-ui/core'
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
+
+import ModalDialog from '../ModalDialog'
 
 import 'ag-grid-enterprise';
 import 'ag-grid-community/dist/styles/ag-grid.css';
@@ -22,9 +24,10 @@ const useStyles = makeStyles(theme => ({
 
 const GridTable = props => {
   const classes = useStyles()
-  const { rowData, columns, updateRow, fileName, deleteRow, createRow } = props
+  const { rowData, columns, updateRow, fileName, deleteRow, createRow, type } = props
   const [gridApi, setGridApi] = useState(null);
   const [isClicked, setIsClicked] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const onGridReady = (params) => setGridApi(params.api)
   const handleExport = () => gridApi.exportDataAsCsv({ fileName })
@@ -42,6 +45,7 @@ const GridTable = props => {
     const selectedData = gridApi.getSelectedRows();
     gridApi.applyTransaction({ remove: selectedData });
     await deleteRow(selectedData[0])
+    setIsOpen(false)
   }
 
   const handleUpdate = async () => {
@@ -49,12 +53,24 @@ const GridTable = props => {
     await updateRow(selectedData[0])
   }
 
+  const onPaginationChanged = async (e) => {
+    if (e.newPage) {
+      await localStorage.setItem(type, e.api.paginationGetCurrentPage());
+    }
+  }
+
+  useEffect(() => {
+    if (gridApi) {
+      gridApi.paginationProxy.currentPage = +localStorage.getItem(type);
+    }
+  }, [gridApi, type])
+
   return (
     <>
       <Button className={classes.button} disabled={!rowData.length} variant='outlined' onClick={handleExport}>
         Завантажити файл
       </Button>
-      <Button className={classes.button} disabled={!isClicked} variant='outlined' onClick={handleRemove}>
+      <Button className={classes.button} disabled={!isClicked} variant='outlined' onClick={() => setIsOpen(true)}>
         Видалити обраний рядок
       </Button>
       <Button className={classes.button} disabled={!isClicked} variant='outlined' onClick={handleUpdate}>
@@ -69,6 +85,7 @@ const GridTable = props => {
             rowSelection: 'single',
             pagination: true,
             paginationAutoPageSize: true,
+            onPaginationChanged,
             reactUi: true,
             defaultColDef,
             rowData,
@@ -101,6 +118,14 @@ const GridTable = props => {
         >
           {columns.map(column => <AgGridColumn {...column} key={column.field} {...(column.isDate && { valueFormatter: ({ value }) => value ? moment.utc(value).format('DD-MM-YYYY') : '' })} />)}
         </AgGridReact>
+        <ModalDialog
+          open={isOpen}
+          handleClose={() => setIsOpen(false)}
+          handleSubmit={() => handleRemove()}
+          title={'Чи ви впевнені, що хочете видалити цей запис'}
+          submitMessage={'Так'}
+          rejectMessage={'Ні'}
+        />
       </div >
     </>
   )

@@ -66,6 +66,7 @@ const Statements = () => {
         <GridTable
           rowData={statements}
           fileName={'Заявки'}
+          type={'statement'}
           columns={statementsColumns}
           deleteRow={handleDeleteStatement}
           updateRow={handleUpdateStatement}
