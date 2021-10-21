@@ -91,7 +91,7 @@ const Register = () => {
 
   const handleReset = () => {
     emailValidation.validate(state).then((data) => {
-      dispatch(resetRegister(email)).catch((error) => {
+      dispatch(resetRegister(email)).then(() => setRegisterStep("register")).catch((error) => {
         if (error.response) {
           setServerError(error.response.data.message);
         }
