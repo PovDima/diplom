@@ -98,8 +98,7 @@ const StatementSchema = new mongoose.Schema(
       type: Number
     },
     sequenceRankingSameNumberOfPoints: {
-      type: String,
-      default: "",
+      type: Number,
     },
     isParticipatesCompetitionStateOrRegional: {//Boolean
       type: String,
@@ -242,8 +241,7 @@ const StatementSchema = new mongoose.Schema(
       default: "",
     },
     priorityStatement: {
-      type: String,
-      default: "",
+      type: Number,
     },
     isRecommendedOnCanceled: {//Boolean
       type: String,
@@ -251,63 +249,49 @@ const StatementSchema = new mongoose.Schema(
     },
     lastTimeChange: {
       type: Date,
-      default: "",
     },
     addedStatement: {
       type: String,
       default: "",
     },
     averageEducationDocumentScore: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoUkrainian: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoUkrainianLiterature: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoUkrainianHistory: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoMathematics: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoBiology: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoGeography: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoPhysics: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoChemistry: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoEnglish: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoFrench: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoGerman: {
-      type: String,
-      default: "",
+      type: Number,
     },
     znoSpanish: {
-      type: String,
-      default: "",
+      type: Number,
     },
     dpo: {
       type: String,
@@ -322,8 +306,7 @@ const StatementSchema = new mongoose.Schema(
       default: "",
     },
     dpoIssueDate: {
-      type: String,
-      default: "",
+      type: Date,
     },
     dpoValidUntil: {
       type: String,
