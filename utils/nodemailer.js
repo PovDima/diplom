@@ -16,7 +16,7 @@ transporter.forgot = function ({ user, token }) {
   this.sendMail({
     from: USER_EMAIL,
     to: user.email,
-    subject: "Змвна паролю",
+    subject: "Зміна паролю",
     text: "Some useless text",
     html: `<p>Ви отримали цей лист, тому що, ви або хтось зробив запит для зміни паролю для вашаго акаунта.\n\n Будь ласка, натисніть на посилання або вставте посілання у веб браузер щоб завершити процес:\n\n
         <a href="http://${HOST}/login/reset/${token.token}">http://${HOST}/login/reset/${token.token}</a> \n\n Якщо ви не роболи запит, то проигноруйте цей лист і ваш пароль залишиться без зміни.\n </p>`,
